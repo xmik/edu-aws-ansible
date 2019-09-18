@@ -1,1 +1,1 @@
-DOJO_DOCKER_IMAGE="kudulab/docker-aws-dojo:0.2.0"
+DOJO_DOCKER_IMAGE="kudulab/aws-dojo:0.2.1"
