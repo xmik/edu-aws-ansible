@@ -16,7 +16,7 @@ $ ssh-keygen -q -b 2048 -t rsa -N '' -C ${key_owner} -f ./secrets/${key_owner}_i
 $ chmod 700 secrets/${key_owner}_id_rsa
 ```
 
-2. Deploy an EC2 instance, using [docker-terraform-dojo](https://github.com/kudulab/docker-terraform-dojo)
+2. Deploy an EC2 instance and a non default VPC, using [docker-terraform-dojo](https://github.com/kudulab/docker-terraform-dojo)
 ```
 $ dojo -c Dojofile.terraform
 $ cd terraform/
@@ -26,6 +26,10 @@ $ terraform plan -out=tf.plan
 $ terraform apply tf.plan
 $ terraform output ec2_public_ip > ../ip.txt
 ```
+**Warning** the EC2 instance type used here is not included in the AWS free tier, but
+ it uses a smaller type. If you want to use free tier, change the type to:
+ `t2.micro`.
+
 The last Terraform resource logs into the EC2 instance using SSH, so afterwards you should be able to SSH login yourself:
 ```
 $ ssh -i secrets/test_id_rsa ubuntu@$(cat ip.txt)
