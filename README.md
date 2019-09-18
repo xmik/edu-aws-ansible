@@ -11,20 +11,20 @@ You need to have installed:
 ## Usage
 1. Generate ssh keypair locally:
 ```
-key_owner="test"
-ssh-keygen -q -b 2048 -t rsa -N '' -C ${key_owner} -f ./secrets/${key_owner}_id_rsa
+$ key_owner="test"
+$ ssh-keygen -q -b 2048 -t rsa -N '' -C ${key_owner} -f ./secrets/${key_owner}_id_rsa
 chmod 700 secrets/${key_owner}_id_rsa
 ```
 
 2. Deploy a EC2 instance, using docker-terraform-dojo
 ```
 $ dojo -c Dojofile.terraform
-cd terraform/
-terraform init
-terraform get
-terraform plan -out=tf.plan
-terraform apply tf.plan
-terraform output ec2_public_ip > ../ip.txt
+$ cd terraform/
+$ terraform init
+$ terraform get
+$ terraform plan -out=tf.plan
+$ terraform apply tf.plan
+$ terraform output ec2_public_ip > ../ip.txt
 ```
 The last Terraform resource logs into the EC2 instance using SSH, so afterwards you should be able to SSH login yourself:
 ```
@@ -50,7 +50,7 @@ $ aws ec2 describe-instances --filters "Name=tag:Name,Values=ec2-ansible-test"
 4. Provision that EC2 instance, using docker-ansible-dojo
 ```
 $ dojo -c Dojofile.ansible
-ansible-playbook -i ansible/hosts.yaml ansible/playbook.yaml -v -e "variable_ip=$(cat ip.txt)"
+$ ansible-playbook -i ansible/hosts.yaml ansible/playbook.yaml -v -e "variable_ip=$(cat ip.txt)"
 ```
 
 now you can test that some contents was written to a dummy file in an EC2 instance:
@@ -58,6 +58,14 @@ now you can test that some contents was written to a dummy file in an EC2 instan
 $ ssh -i secrets/test_id_rsa ubuntu@$(cat ip.txt) "cat /tmp/hello"
 Warning: Permanently added '52.209.144.23' (ECDSA) to the list of known hosts.
 hi
+```
+
+5. Clean up (remove the AWS resources):
+```
+$ dojo -c Dojofile.terraform
+$ cd terraform/
+$ terraform plan -destroy -out=tf.plan
+$ terraform apply tf.plan
 ```
 
 ## What could be improved?
