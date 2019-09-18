@@ -1,3 +1,6 @@
 .terraform
 ip.txt
 *id_rsa*
+terraform.tfstate
+terraform.tfstate.backup
+tf.plan
