@@ -1,0 +1,5 @@
+---
+- name: Provision myserver
+  hosts: myserver
+  roles:
+    - simple

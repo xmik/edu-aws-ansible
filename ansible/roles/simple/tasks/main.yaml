@@ -1,0 +1,18 @@
+---
+- name: Create a file (touched once only)
+  copy:
+    content: "hi"
+    dest: /tmp/hello
+    force: yes
+    group: ubuntu
+    owner: ubuntu
+    mode: 0555
+
+# the output of this task is visible only if you use ansible command
+# with `-v` option
+- name: Run a whoami command to see which user we are running as
+  shell: whoami
+
+- name: add group "mygroup"
+  group: name=mygroup
+  become: true

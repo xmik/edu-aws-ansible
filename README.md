@@ -50,7 +50,14 @@ $ aws ec2 describe-instances --filters "Name=tag:Name,Values=ec2-ansible-test"
 4. Provision that EC2 instance, using docker-ansible-dojo
 ```
 $ dojo -c Dojofile.ansible
-ansible-playbook -i ansible/hosts.yaml ansible/playbook.yml -v -e "variable_ip=$(cat ip.txt)"
+ansible-playbook -i ansible/hosts.yaml ansible/playbook.yaml -v -e "variable_ip=$(cat ip.txt)"
+```
+
+now you can test that some contents was written to a dummy file in an EC2 instance:
+```
+$ ssh -i secrets/test_id_rsa ubuntu@$(cat ip.txt) "cat /tmp/hello"
+Warning: Permanently added '52.209.144.23' (ECDSA) to the list of known hosts.
+hi
 ```
 
 ## What could be improved?
