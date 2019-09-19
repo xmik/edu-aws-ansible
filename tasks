@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+command="$1"
+set +u
+case "${command}" in
+  deploy)
+      dojo -c Dojofile.terraform "./tasks _deploy"
+      ;;
+  _deploy)
+      cd terraform/
+      terraform init
+      terraform get
+      terraform plan -out=tf.plan
+      terraform apply tf.plan
+      terraform output ec2_public_ip > ../ip.txt
+      ;;
+  provision)
+      dojo -c Dojofile.ansible "./tasks _provision"
+      ;;
+  _provision)
+      ansible-playbook -i ansible/hosts.yaml ansible/playbook.yaml -v -e "variable_ip=$(cat ip.txt)"
+      ;;
+  destroy)
+      dojo -c Dojofile.terraform "./tasks _destroy"
+      ;;
+  _destroy)
+      cd terraform/
+      terraform plan -destroy -out=tf.plan
+      terraform apply tf.plan
+      ;;
+  *)
+      echo "Invalid command: '${command}'"
+      exit 1
+      ;;
+esac
+set +e
