@@ -1,1 +1,1 @@
-DOJO_DOCKER_IMAGE="kudulab/ansible-dojo:1.1.0"
+DOJO_DOCKER_IMAGE="kudulab/ansible-dojo:1.5.0"
